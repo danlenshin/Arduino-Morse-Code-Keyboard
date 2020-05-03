@@ -4,7 +4,7 @@
  */
 
 //Pin + Time Definitions
-#define INPUTPIN 6 //Pin where button inputs are directed
+#define INPUTPIN 3 //Pin where button inputs are directed
 #define TIMEPERIODMS 50 //Morse time period (<3 = dit, >3 = dash)
 #define AFKTIMEMS 10000 //Time until you are considered AFK
 
@@ -29,12 +29,12 @@ char charFromMorse(char morseArray[])
   
   String morseChars[] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", //Letters A-Z
   ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----", //Numbers 1-9, 0
-  ".-.-.-", "--..--", "..--..", ".----.", "-.-.--", "-..-.", "-.--.", "-.--.-", ".-...", "---...", "-.-.-.", "-...-", ".-.-.", "-....-", "..--.-", ".-..-.", "...-..-", ".--.-." //Punctuation
+  ".-.-.-", "--..--", "..--..", ".----.", "-.-.--", "-..-.", "-.--.", "-.--.-", ".-...", "---...", "-.-.-.", "-...-", ".-.-.", "-....-", "..--.-", ".-..-.", "...-..-", ".--.-.", "........" //Punctuation
   };
 
   char correspondentChars[] = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
   '1','2','3','4','5','6','7','8','9','0',
-  '.', ',', '?', '\'', '!', '/', '(', ')', '&', ':', ';', '=', '+', '-', '_', '"', '$', '@'
+  '.', ',', '?', '\'', '!', '/', '(', ')', '&', ':', ';', '=', '+', '-', '_', '"', '$', '@', 8
   };
 
   for(int i = 0; i < sizeof(morseChars); i++)
@@ -57,7 +57,7 @@ void setup()
 //Global Variables used in loop()
 unsigned long pressBegin;
 boolean transmissionStartChar = true; //Boolean to check if the character being entered is the first character
-char morse[] = {' ', ' ', ' ', ' ', ' ', ' ', ' '}; //Main array containing morse code characters
+char morse[] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}; //Main array containing morse code characters
 int morsePointer = 0; //Pointer referencing elements in morse[]
 
 void loop() 
@@ -87,7 +87,7 @@ void loop()
         morse[morsePointer] = getChar(pressTime);
         morsePointer++;
         
-        if(morsePointer == 7)
+        if(morsePointer == 8)
         {
           Serial.print(charFromMorse(morse));
           for(int i = 0; i < sizeof(morse); i++)
@@ -101,7 +101,7 @@ void loop()
   }
 
   //
-  if(timeSinceLastPress - pressBegin > TIMEPERIODMS * 7 && morse[0] != ' ')
+  if(timeSinceLastPress - pressBegin > TIMEPERIODMS * 12 && morse[0] != ' ')
   {
     Serial.print(charFromMorse(morse));
     for(int i = 0; i < sizeof(morse); i++)
